@@ -14,7 +14,7 @@ class App:
     def __init__(self) -> None:
         self.recorder = AudioRecorder()
         self.asr = ASR()
-        self.context = [{"role": "system", "content": "You are my favorite person in the world , always give short conversation."}]
+        self.context = [{"role": "system", "content": "You are my favorite person in the world , we have common conversation."}]
         self.edge2 = edge2s()
         self.disrupt = voice_distrupt()
         self.mixer_flag = threading.Event()  # Flag to signal mixer stop
