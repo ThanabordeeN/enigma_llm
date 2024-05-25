@@ -55,8 +55,7 @@ python main.py
 - `edge2`: An instance of the `edge_tts` class, used for converting text responses into speech.
 
    ```python
-   selfMultiplier = 1
-   self.edge2 = edge_tts()
+   self.edge2 = edge_tts(speaker = "en-US-AriaNeural")
    ```
 
 - `disrupt`: An instance of the `voice_disrupt` class, responsible for detecting voice disruptions during playback.
@@ -117,8 +116,8 @@ python main.py
        self.stop_tts()
        pygame.mixer.init()
        self.mixer_flag.set()
-       self.recorder.start_recording()
-       text = self.asr.transcribe("input.wav")
+       self.recorder.start_recording(activate_volume=500)
+       text = self.asr.transcribe("HUMAN.wav")
        logging.info(f"Transcribed text: {text}")
        self.context.append({'role': 'user', 'content': text})
        response = get_llm_response(self.context)
@@ -138,7 +137,7 @@ python main.py
        logging.info("Generating TTS and playing audio")
        try:
            self.audio_playing = True
-           self.edge2.speak(text)
+           self.edge2.speak(text,speaker = "en-US-AriaNeural")
        except Exception as e:
            logging.info(f"Error during playback: {e}")
        finally:
@@ -163,7 +162,7 @@ python main.py
    - Handles exceptions during playback and logs any errors.
 
    ```python
-   def play_audio(self, filename="output.mp3"):
+   def play_audio(self, filename="AI.mp3"):
        logging.info("Playing audio")
        try:
            self.audio_playing = True
@@ -187,7 +186,7 @@ python main.py
    ```python
    def detect_voice_disrupt(self):
        logging.info("Detecting voice disrupt")
-       if self.disrupt.voice_disrupt() and self.audio_playing:
+       if self.disrupt.voice_disrupt(volume=1000) and self.audio_playing:
            logging.info("Voice disrupted, stopping audio")
            self.mixer_flag.clear()
    ```

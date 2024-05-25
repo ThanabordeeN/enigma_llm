@@ -34,7 +34,7 @@ class App:
         self.stop_tts()
         pygame.mixer.init()
         self.mixer_flag.set()
-        self.recorder.start_recording()
+        self.recorder.start_recording(activate_volume=500)
         text = self.asr.transcribe(speech_file="HUMAN.wav", language="english") 
         logging.info(f"Transcribed text: {text}")
         self.context.append({'role': 'user', 'content': text})
