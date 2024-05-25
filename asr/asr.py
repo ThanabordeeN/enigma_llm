@@ -7,7 +7,7 @@ class ASR:
             device=0,
             chunk_length_s=30,
         )
-    def transcribe(self, speech_file):
-        return self.pipe(speech_file, generate_kwargs = {"task":"transcribe", "language":"english"})['text']
+    def transcribe(self, speech_file ,language="english") -> str:
+        return self.pipe(speech_file, generate_kwargs = {"task":"transcribe", "language":language})['text']
     
     

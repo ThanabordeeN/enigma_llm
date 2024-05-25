@@ -13,7 +13,16 @@ class AudioRecorder:
 
     def __init__(self):
         pass
-    def start_recording(self):
+    def start_recording(self, activate_volume=500):
+        """
+        Starts recording audio from the input device.
+
+        Args:
+            activate_volume (int): The volume threshold to activate recording. Defaults to 500.
+
+        Returns:
+            None
+        """
         audio = pyaudio.PyAudio()
         stream = audio.open(format=self.FORMAT, channels=self.CHANNELS, 
                                  rate=self.RATE, input=True, frames_per_buffer=self.CHUNK ,input_device_index=1)
@@ -26,7 +35,7 @@ class AudioRecorder:
             data = stream.read(self.CHUNK)
             data_chunk = array('h', data)
             vol = max(data_chunk)
-            if vol >= 500:
+            if vol >= activate_volume:
                 logging.info("🔊")
                 frames.append(data)
                 last_sound_time = time.time()
@@ -40,7 +49,7 @@ class AudioRecorder:
         stream.stop_stream()
         stream.close()
         audio.terminate()
-        self.save_to_file(frames,audio)
+        self.save_to_file(frames, audio)
 
     def save_to_file(self, frames,audio):
         wavfile = wave.open(self.FILE_NAME, 'wb')
@@ -52,4 +61,6 @@ class AudioRecorder:
   
             
         
-# Usage
+  
+            
+        # Usage
